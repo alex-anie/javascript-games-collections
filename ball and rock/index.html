@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ball and Rock Game</title>
+</head>
+<style>
+    body{
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+  main{
+    width: 600px;
+    height: 300px;
+    border: 1px solid black;
+    position: relative;
+  }
+
+  .box {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+
+  }
+
+  .b1 {
+    transition: all 0.5s linear;
+  }
+
+  .ball {
+    background-image: url(/ball.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
+
+  .rock {
+    background-image: url(/rock.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
+
+
+  .b2 {
+    left: 520px;
+    bottom: 50px;
+  }
+
+  .animate-b2 {
+    animation-name: animateB2;
+    animation-duration: 2000ms;
+    animation-iteration-count: infinite;
+    animation-play-state: running;
+    animation-direction: alternate-reverse;
+  }
+
+  .animate-b3 {
+    animation-name: animateB3;
+    animation-duration: 1000ms;
+    animation-iteration-count: infinite;
+    animation-play-state: running;
+    animation-direction: alternate;
+  }
+
+  .animate-b4 {
+    animation-name: animateB4;
+    animation-duration: 1000ms;
+    animation-iteration-count: infinite;
+    animation-play-state: running;
+    animation-direction: alternate;
+  }
+
+  .line {
+    width: 90%;
+    position: absolute;
+    bottom: 50px;
+    left: 30px;
+    height: 10px;
+
+    background-image: url(/rails.png);
+    background-repeat: repeat;
+    background-size: contain;
+    background-position: center;
+    background-size: 10px;
+  }
+
+  @keyframes animateB2 {
+    from{
+        left: 520px;
+    }
+
+    to{
+        left: 30px;
+    }
+  }
+
+  @keyframes animateB3 {
+    from{
+        left: 520px;
+    }
+
+    to{
+        left: 30px;
+    }
+  }
+
+  /* Titles */
+
+  .preview, .high-score{
+    font-family: monospace;
+  }
+
+  .game-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 2em;
+  }
+
+
+  /* RESTART GAME MODEL */
+  .game-over-model {
+    width: 200px;
+    height: 100px;
+    border: 4px ridge black;
+    background-color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    column-gap: 10px;
+
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    z-index: 15;
+    transition: all 0.5s ease;
+  }
+
+  .game-over-title {
+    font-family: monospace;
+    font-weight:900;
+    font-size: 2em;
+  }
+
+  .game-over-button {
+    font-family: monospace;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin-bottom: 2em;
+
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: pointer;
+  }
+
+  .restart-overlay {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    z-index: 10;
+    transition: all 0.5s ease;
+  }
+
+</style>
+<body>
+    <p class="game-title">Ball and Rock Game</p>
+    <p class="high-score">High Score: 0</p>
+    <main>
+        <div class="box b1 ball"></div>
+        <div class="box b2 rock"></div>
+        <div class="line"></div>
+    </main>
+    <p class="preview">press the arrowUp ( ⬆️ ) key on your keyboard to move the ball up | prevent the ball from hitting the rock</p>
+   <script>
+        const main = document.querySelector('main');
+        const box1 = document.querySelector('.b1');
+        const box2 =  document.querySelector('.b2');
+        const highScore =  document.querySelector('.high-score');
+
+        function gameLevels(){
+          const box3 = box2.cloneNode(true);
+          box3.classList.add('class','top-ball');
+          box3.setAttribute('id', 'topBall');
+          main.appendChild(box3)
+          return box3;
+        }
+
+        const topBall = gameLevels();
+        topBall.style.bottom = '250px';
+       
+        console.log(topBall)
+
+        box1.style.left = '200px';
+        box1.style.bottom = '50px';
+
+        let score = 0;
+
+        let intervalID = {}
+
+        function intersect(){
+            const currentBox1 = box1.getBoundingClientRect();
+            const currentBox2 = box2.getBoundingClientRect();
+            const currentTopBall = topBall.getBoundingClientRect();
+
+          return (
+            !( currentBox1.right < currentBox2.left ||
+                currentBox1.left > currentBox2.right ||
+                currentBox1.top > currentBox2.bottom ||
+                currentBox1.bottom < currentBox2.top 
+            )
+
+          ||
+
+           !( currentBox1.right < currentTopBall.left ||
+                currentBox1.left > currentTopBall.right ||
+                currentBox1.top > currentTopBall.bottom ||
+                currentBox1.bottom < currentTopBall.top
+            )
+        )
+        }
+
+        // Check if the ball collide with rock, stop the 
+        // Game and restart
+        function collision(){
+            if(intersect()){
+                gameOver();
+                restartModelGame()
+            }
+        }
+
+        // Check if the ball does not collide and increase the high score
+        function setScore(e){
+              score++
+              highScore.textContent = 'High Score: ' + score;
+        }
+
+        // save the setInterval into the intervalID for future use
+        intervalID.collision = setInterval(
+          collision
+        , 100);
+
+        function moveUp(e){
+          if(e.key === 'ArrowUp'){
+              box1.style.bottom = '250px';
+              if (!intervalID.setScore) {
+                    intervalID.setScore = setInterval(setScore, 100);
+                }
+          }
+        }
+
+        function moveDown(e){
+          if(e.key === 'ArrowUp'){
+              box1.style.bottom = '50px';
+              topBall.classList.add('animate-b3');
+              box1.classList.add('animate-b1');
+              box2.classList.add('animate-b2');
+          }
+        }
+
+        document.addEventListener('keydown', moveUp);
+        document.addEventListener('keyup', moveDown);
+
+        // Stop the game from playing
+        function gameOver(){
+          box1.style.transform = 'rotate(45deg)';
+          box2.classList.remove('animate-b2');
+          topBall.classList.remove('animate-b3');
+
+          clearInterval(intervalID.collision);
+          clearInterval(intervalID.setScore);
+          intervalID.setScore = null;
+          document.removeEventListener('keydown', moveUp);
+          document.removeEventListener('keyup', moveDown);
+        }
+
+        // Create the popover elements to restart game
+        function restartModelGame(){
+          // Create New Elements for models
+          const aside = document.createElement('aside');
+          const button = document.createElement('button');
+          const para = document.createElement('p');
+          const overlay = document.createElement('div');
+
+          //add classes to elements
+          overlay.setAttribute('class', 'restart-overlay');
+          aside.classList.add('game-over-model');
+          para.classList.add('game-over-title');
+          button.classList.add('game-over-button');
+          button.setAttribute('id', 'restartBtnGame')
+
+          // Adding text content
+          para.textContent = 'Game Over';
+          button.textContent = 'Restart';
+
+          // append Elements to the documents
+          main.appendChild(overlay);
+          main.appendChild(aside);
+          aside.appendChild(para);
+          aside.appendChild(button);
+
+          // Restart the game
+          function restartGame(){
+            button.addEventListener('click', ()=>{
+            aside.style.transform = 'scale(0)';
+            overlay.style.transform = 'scale(0)';
+            box1.style.transform = 'rotate(0deg)';
+            highScore.textContent = 'High Score: 0';
+            score = 0;
+          })
+
+          document.addEventListener('keydown', moveUp);
+          document.addEventListener('keyup', moveDown);   
+          intervalID.collision = setInterval(collision, 100);
+        }
+
+        restartGame();
+        }
+
+   </script>
+</html>
