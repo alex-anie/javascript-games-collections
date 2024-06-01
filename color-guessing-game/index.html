@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Color Guessing Game</title>
+    <script type="module" src="app.js"></script>
+  </head>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .color-container {
+      width: 400px;
+      height: 200px;
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, 200px);
+    }
+
+    .color-box-win {
+      border: 4px solid green;
+      padding: 10px;
+      font-size: 25px;
+      color: white;
+      text-align: center;
+
+      animation: name duration timing-function delay iteration-count direction
+        fill-mode;
+      animation-name: animateWin;
+      animation-delay: 200ms;
+      animation-duration: 300ms;
+      animation-timing-function: ease;
+      animation-iteration-count: infinite;
+      /* animation-fill-mode: ; */
+    }
+
+    @keyframes animateWin {
+      from {
+        background-color: green;
+      }
+
+      to {
+        background-color: yellowgreen;
+      }
+    }
+  </style>
+  <body>
+    <main>
+      <div>
+        <h1>Color Guessing Game</h1>
+        <p class="instruction">
+          Click one of the boxes bellow to pick the right color within 10
+          seconds
+          <button>Start Game</button>
+        </p>
+      </div>
+      <div>
+        <p class="preview"></p>
+      </div>
+
+      <div>
+        <p class="points">points:</p>
+        <p class="count-down">Count down:</p>
+      </div>
+
+      <section class="color-container">
+        <div class="color-box box1"></div>
+        <div class="color-box box2"></div>
+        <div class="color-box box3"></div>
+        <div class="color-box box4"></div>
+      </section>
+    </main>
+  </body>
+</html>

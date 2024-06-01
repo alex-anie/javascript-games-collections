@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Color Guessing Game</title>
+    <script type="module" src="text.js"></script>
+  </head>
+  <style>
+    main {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .game-title {
+      font-size: 2em;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .names-of-colors {
+      width: 90%;
+      height: 200px;
+      overflow-y: auto;
+    }
+
+    .color-container {
+      width: 90%;
+      height: 200px;
+      overflow-y: auto;
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(10, 100px);
+      padding: 10px;
+    }
+
+    .box {
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      border-radius: 10px;
+      border: 1px solid black;
+    }
+
+    .display-text {
+      width: 90vw;
+      border-radius: 100px;
+      background-color: springgreen;
+      position: relative;
+      display: flex;
+      justify-content: space-evenly;
+      gap: 20px;
+    }
+    .place {
+      position: absolute;
+      left: 20px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .points {
+      position: absolute;
+      right: 100px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .control {
+      position: absolute;
+      right: 300px;
+    }
+
+    .count-down {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .preview {
+      font-size: 2em;
+      position: absolute;
+      top: -30px;
+      left: 250px;
+    }
+
+    .list {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      justify-content: space-evenly;
+      gap: 10px;
+    }
+
+    .list li {
+      list-style-type: none;
+      border: 1px solid black;
+      position: relative;
+    }
+
+    .color-input:checked + label::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: orchid;
+      z-index: -1;
+    }
+
+    /* .color-box-win {
+      border: 4px solid green;
+      padding: 10px;
+      font-size: 25px;
+      color: white;
+      text-align: center;
+
+      animation: name duration timing-function delay iteration-count direction
+        fill-mode;
+      animation-name: animateWin;
+      animation-delay: 200ms;
+      animation-duration: 300ms;
+      animation-timing-function: ease;
+      animation-iteration-count: infinite;
+    
+    }
+
+    @keyframes animateWin {
+      from {
+        background-color: green;
+      }
+
+      to {
+        background-color: yellowgreen;
+      }
+    } */
+  </style>
+  <body>
+    <main>
+      <div>
+        <p class="game-title">Color Match Game</p>
+      </div>
+
+      <div class="names-of-colors">
+        <ul class="list"></ul>
+      </div>
+
+      <div class="display-text">
+        <p class="place">This color is selected:</p>
+        <p class="preview"></p>
+
+        <p class="points">points:</p>
+        <p class="control">
+          <input type="checkbox" name="control" id="control" value="control" />
+          <label for="control"></label>
+        </p>
+        <p class="count-down">Count down:</p>
+      </div>
+
+      <section class="color-container"></section>
+    </main>
+  </body>
+</html>
