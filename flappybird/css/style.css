@@ -1,0 +1,271 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+img {
+  width: 100%;
+}
+
+.root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Styles on game-background */
+.game-background {
+  /* border: 1px solid black; */
+  background-image: url(/sprites/background_day.png);
+
+  background-repeat: repeat;
+  background-size: contain;
+  background-position: 900px center;
+  animation-name: animateGround;
+  animation-iteration-count: infinite;
+  animation-direction: reverse;
+  animation-duration: 10s;
+  animation-timing-function: linear;
+  animation-play-state: running;
+}
+
+/* The ground for the game */
+.ground {
+  /* border: 1px solid black; */
+  width: 100%;
+  height: 70px;
+  background-image: url(/sprites/ground.png);
+  background-repeat: repeat;
+  background-size: contain;
+  background-position: 900px center;
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+
+  animation-name: animateGround;
+  animation-iteration-count: infinite;
+  animation-duration: 6s;
+  animation-timing-function: linear;
+  animation-play-state: running;
+}
+
+@keyframes animateGround {
+  from {
+    background-position: 900px center;
+  }
+  to {
+    background-position: 100px center;
+  }
+}
+
+/* Styling bird */
+.bird {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 250px;
+  left: 50%;
+  background-image: url(/sprites/bird_orange_1.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center center;
+}
+
+.animate-bounce-bird {
+  animation-name: bounceBird;
+  animation-iteration-count: infinite;
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+  animation-play-state: running;
+}
+
+.animate-flapping-wings {
+  background-image: url(/sprites/bird_orange_1.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center center;
+  animation-name: flappingWings;
+  animation-iteration-count: infinite;
+  animation-duration: 200ms;
+  animation-timing-function: ease-out;
+  animation-play-state: running;
+}
+
+@keyframes bounceBird {
+  from {
+    top: 250px;
+  }
+  to {
+    top: 230px;
+  }
+}
+
+@keyframes flappingWings {
+  0% {
+    background-image: url(/sprites/bird_orange_1.png);
+  }
+  50% {
+    background-image: url(/sprites/bird_orange_2.png);
+  }
+  100% {
+    background-image: url(/sprites/bird_orange_0.png);
+  }
+}
+
+/* FlappyBird Text styling */
+.flappy-bird-text {
+  width: 200px;
+  height: 50px;
+  position: absolute;
+  top: 150px;
+  left: 45%;
+  background-image: url(/sprites/label_flappy_bird.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  transition: all 0.5s ease;
+  z-index: 8;
+}
+
+/* first-pole-a styling */
+.poles-a {
+  width: 50px;
+  height: 150px;
+  position: absolute;
+  top: 50px;
+  right: 0px;
+  background-image: url(/sprites/pipe_green_top.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center -160px;
+  opacity: 0;
+}
+
+.poles-b {
+  width: 50px;
+  height: 150px;
+  position: absolute;
+  bottom: 120px;
+  right: 0px;
+  background-image: url(/sprites/pipe_green_bottom.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center 0px;
+  opacity: 0;
+}
+
+/* Delay the animation */
+.first-pole-a {
+  animation-delay: 0ms;
+}
+.first-pole-b {
+  animation-delay: 0ms;
+}
+
+.second-pole-a {
+  animation-delay: 1500ms;
+}
+
+.second-pole-b {
+  animation-delay: 1500ms;
+}
+
+.third-pole-a {
+  animation-delay: 3000ms;
+}
+
+.third-pole-b {
+  animation-delay: 3000ms;
+}
+
+.animate-first-poles {
+  background-position: center center;
+  animation-name: firstPoles;
+  animation-iteration-count: infinite;
+  animation-duration: 5s;
+  animation-timing-function: linear;
+  animation-play-state: running;
+}
+
+@keyframes firstPoles {
+  from {
+    right: 0px;
+  }
+  to {
+    right: 100%;
+  }
+}
+
+/* Game over popup */
+.game-over-container {
+  width: 50%;
+  height: 200px;
+  background: transparent;
+  border-radius: 10px;
+  position: absolute;
+  left: 50%;
+  top: -50%;
+  transform: translate(-50%, -50%);
+  z-index: 8;
+  padding: 5px;
+  transition: all 0.5s ease;
+}
+
+.score-board {
+  width: 50%;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  transform: translate(50%);
+  border: 2px solid black;
+  border-radius: 10px;
+  background-color: rgb(228, 185, 130);
+  margin: 5px 0;
+}
+
+.share-btn {
+  display: inline-block;
+  width: 50%;
+  height: 50px;
+  background-image: url(/sprites/button_share.png);
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin: 5px 0;
+  cursor: pointer;
+}
+
+.restart-btn {
+  display: inline-block;
+  width: 50%;
+  height: 50px;
+  background-image: url(/sprites/restart.png);
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin: 5px 0;
+  cursor: pointer;
+}
+
+.laderboard {
+  width: 100%;
+  height: 50px;
+  background-image: url(/sprites/leaderboard.png);
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.g-btn:hover {
+  opacity: 0.8;
+}
+
+.g-btn:active {
+  transform: translateY(2px);
+}
